@@ -9,19 +9,15 @@ from absl import logging
 from google.api_core.extended_operation import ExtendedOperation
 from google.cloud import compute_v1
 
-# flags = flags.FLAGS
-# flags.DEFINE_string("project_id", "", "Google Cloud Project ID.")
-# flags.DEFINE_string("zone", "", "Google Cloud Zone. us-central1-c, etc.")
-# flags.DEFINE_string("service_name_tag", "",
-#                     "Tag on VM to be considered for deletion.")
+flags = flags.FLAGS
+flags.DEFINE_string("project_id", "", "Google Cloud Project ID.")
+flags.DEFINE_string("zone", "", "Google Cloud Zone. us-central1-c, etc.")
+flags.DEFINE_string("service_name_tag", "",
+                    "Tag on VM to be considered for deletion.")
 
-# PROJECT_ID = flags.project_id
-# ZONE = flags.zone
-# SERVICE_NAME_TAG = flags.service_name_tag
-
-PROJECT_ID = "sendemail-1616313376010"
-ZONE = "us-central1-a"
-SERVICE_NAME_TAG = "checkmate"
+PROJECT_ID = flags.project_id
+ZONE = flags.zone
+SERVICE_NAME_TAG = flags.service_name_tag
 
 
 def main(_):
