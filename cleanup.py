@@ -10,13 +10,13 @@ from google.api_core.extended_operation import ExtendedOperation
 from google.cloud import compute_v1
 
 FLAGS = flags.FLAGS
-flags.DEFINE_string("project_id", "", "Google Cloud Project ID.")
-flags.DEFINE_string("zone", "", "Google Cloud Zone. us-central1-c, etc.")
+flags.DEFINE_string("gcp_project_id", "", "Google Cloud Project ID.")
+flags.DEFINE_string("gcp_zone", "", "Google Cloud Zone. us-central1-c, etc.")
 flags.DEFINE_string("service_name_label", "",
                     "Label on VM to be considered for deletion.")
 
-PROJECT_ID = FLAGS.project_id
-ZONE = FLAGS.zone
+PROJECT_ID = FLAGS.gcp_project_id
+ZONE = FLAGS.gcp_zone
 SERVICE_NAME_LABEL = FLAGS.service_name_label
 
 
