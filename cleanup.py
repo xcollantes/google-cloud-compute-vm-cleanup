@@ -10,20 +10,23 @@ from google.api_core.extended_operation import ExtendedOperation
 from google.cloud import compute_v1
 
 FLAGS = flags.FLAGS
-flags.DEFINE_string("gcp_project_id", "", "Google Cloud Project ID.")
-flags.DEFINE_string("gcp_zone", "", "Google Cloud Zone. us-central1-c, etc.")
+flags.DEFINE_string("project_id", "", "Google Cloud Project ID.")
+flags.DEFINE_string("zone", "", "Google Cloud Zone. us-central1-c, etc.")
 flags.DEFINE_string("service_name_label", "",
                     "Label on VM to be considered for deletion.")
 
-PROJECT_ID = FLAGS.gcp_project_id
-ZONE = FLAGS.gcp_zone
-SERVICE_NAME_LABEL = FLAGS.service_name_label
-
 
 def main(_):
+    PROJECT_ID = FLAGS.project_id
+    ZONE = FLAGS.zone
+    SERVICE_NAME_LABEL = FLAGS.service_name_label
+
     client: compute_v1.InstancesClient = compute_v1.InstancesClient()
     oldest_vm: tuple[str, datetime.datetime |
-                     None] = get_oldest_vm(client, SERVICE_NAME_LABEL)
+                     None] = get_oldest_vm(client,
+                                           SERVICE_NAME_LABEL,
+                                           PROJECT_ID,
+                                           ZONE)
     if oldest_vm[1] is None:
         logging.info("There is no older VM for this service.")
         exit()
@@ -37,12 +40,14 @@ def main(_):
 
 
 def get_oldest_vm(client: compute_v1.InstancesClient,
-                  service_name_label: str) -> tuple[str, datetime.datetime | None]:
+                  service_name_label: str,
+                  project_id: str,
+                  zone: str) -> tuple[str, datetime.datetime | None]:
     """Return list of non-terminated Compute VMs."""
 
     oldest_candidate: tuple[str, datetime.datetime] = ("", None)
 
-    for instance in client.list(project=PROJECT_ID, zone=ZONE):
+    for instance in client.list(project=project_id, zone=zone):
         logging.info("Looking at VM: %s %s", instance.name, instance.status)
 
         if instance.labels["service"] == service_name_label and instance.status == "RUNNING":
