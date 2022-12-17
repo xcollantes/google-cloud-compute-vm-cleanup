@@ -12,18 +12,18 @@ from google.cloud import compute_v1
 flags = flags.FLAGS
 flags.DEFINE_string("project_id", "", "Google Cloud Project ID.")
 flags.DEFINE_string("zone", "", "Google Cloud Zone. us-central1-c, etc.")
-flags.DEFINE_string("service_name_tag", "",
+flags.DEFINE_string("service_name_label", "",
                     "Tag on VM to be considered for deletion.")
 
 PROJECT_ID = flags.project_id
 ZONE = flags.zone
-SERVICE_NAME_TAG = flags.service_name_tag
+SERVICE_NAME_LABEL = flags.service_name_label
 
 
 def main(_):
     client: compute_v1.InstancesClient = compute_v1.InstancesClient()
     oldest_vm: tuple[str, datetime.datetime |
-                     None] = get_oldest_vm(client, SERVICE_NAME_TAG)
+                     None] = get_oldest_vm(client, SERVICE_NAME_LABEL)
     if oldest_vm[1] is None:
         logging.info("There is no older VM for this service.")
         exit()
@@ -37,16 +37,15 @@ def main(_):
 
 
 def get_oldest_vm(client: compute_v1.InstancesClient,
-                  service_name_tag: str) -> tuple[str, datetime.datetime | None]:
+                  service_name_label: str) -> tuple[str, datetime.datetime | None]:
     """Return list of non-terminated Compute VMs."""
 
     oldest_candidate: tuple[str, datetime.datetime] = ("", None)
 
     for instance in client.list(project=PROJECT_ID, zone=ZONE):
         logging.info("Looking at VM: %s %s", instance.name, instance.status)
-        print(instance.labels["service"])
 
-        if instance.labels["service"] == service_name_tag and instance.status == "RUNNING":
+        if instance.labels["service"] == service_name_label and instance.status == "RUNNING":
             print(oldest_candidate)
             if oldest_candidate[1] is None:
                 oldest_candidate = (instance.name, datetime.datetime.fromisoformat(
@@ -58,7 +57,7 @@ def get_oldest_vm(client: compute_v1.InstancesClient,
                     oldest_candidate = (instance.name, instance_timestamp)
 
     logging.info(
-        "Oldest VM for %s service is %s created at %s", service_name_tag,
+        "Oldest VM for %s service is %s created at %s", service_name_label,
         oldest_candidate[0], oldest_candidate[1])
     return oldest_candidate
 
