@@ -15,9 +15,9 @@ flags.DEFINE_string("zone", "", "Google Cloud Zone. us-central1-c, etc.")
 flags.DEFINE_string("service_name_label", "",
                     "Label on VM to be considered for deletion.")
 
-PROJECT_ID = flags.project_id
-ZONE = flags.zone
-SERVICE_NAME_LABEL = flags.service_name_label
+PROJECT_ID = FLAGS.project_id
+ZONE = FLAGS.zone
+SERVICE_NAME_LABEL = FLAGS.service_name_label
 
 
 def main(_):
