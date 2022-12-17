@@ -13,7 +13,7 @@ flags = flags.FLAGS
 flags.DEFINE_string("project_id", "", "Google Cloud Project ID.")
 flags.DEFINE_string("zone", "", "Google Cloud Zone. us-central1-c, etc.")
 flags.DEFINE_string("service_name_label", "",
-                    "Tag on VM to be considered for deletion.")
+                    "Label on VM to be considered for deletion.")
 
 PROJECT_ID = flags.project_id
 ZONE = flags.zone
