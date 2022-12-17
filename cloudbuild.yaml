@@ -16,3 +16,5 @@ steps:
         --zone=$ZONE,
         --service_name_label=$_SERVICE_LABEL,
       ]
+options:
+  logging: CLOUD_LOGGING_ONLY
