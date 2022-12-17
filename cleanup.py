@@ -9,7 +9,7 @@ from absl import logging
 from google.api_core.extended_operation import ExtendedOperation
 from google.cloud import compute_v1
 
-flags = flags.FLAGS
+FLAGS = flags.FLAGS
 flags.DEFINE_string("project_id", "", "Google Cloud Project ID.")
 flags.DEFINE_string("zone", "", "Google Cloud Zone. us-central1-c, etc.")
 flags.DEFINE_string("service_name_label", "",
