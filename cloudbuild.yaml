@@ -1,20 +1,9 @@
 steps:
-  - name: python
-    entrypoint: python
-    args: [-m, pip, install, --upgrade, pip]
-  - name: python
-    entrypoint: python
-    args: [-m, pip, install, -r, requirements.txt]
-  - name: python
-    entrypoint: python
-    id: Removing the oldest VM with the service label
-    args:
-      [
-        -m,
-        cleanup,
-        --project_id=$PROJECT_ID,
-        --zone=$ZONE,
-        --service_name_label=$_SERVICE_LABEL,
-      ]
+  - name: gcr.io/cloud-builders/docker
+    id: Build image for removing the oldest VM with the service label
+    args: [build, -t, $_GCR/$PROJECT_ID/vm-cleanup/vm-cleanup, "."]
+images: [$_GCR/$PROJECT_ID/vm-cleanup/vm-cleanup]
 options:
   logging: CLOUD_LOGGING_ONLY
+substitutions:
+  _GCR: ""
