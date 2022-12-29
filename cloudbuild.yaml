@@ -6,4 +6,4 @@ images: [$_GCR/$PROJECT_ID/$REPO_NAME/$BRANCH_NAME]
 options:
   logging: CLOUD_LOGGING_ONLY
 substitutions:
-  _GCR: ""
+  _GCR: us-docker.pkg.dev
